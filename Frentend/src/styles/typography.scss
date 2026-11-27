@@ -1,0 +1,89 @@
+/* 数字与中文混排统一规范：
+   - 指标数字不用衬线体，避免中英/数字视觉忽大忽小
+   - 同行文字与数字统一行高
+   - 主数字 + 单位：数字更大，单位与数字下底平齐 */
+
+.fv-num {
+  font-family: -apple-system, BlinkMacSystemFont, 'PingFang SC', 'Hiragino Sans GB', 'Helvetica Neue', sans-serif;
+  font-variant-numeric: tabular-nums;
+  font-feature-settings: 'tnum' 1;
+}
+
+.fv-inline-stat {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  flex-wrap: nowrap;
+  gap: 6rpx;
+  white-space: nowrap;
+}
+
+.fv-inline-stat__label,
+.fv-inline-stat__num,
+.fv-inline-stat__sep {
+  font-size: 20rpx;
+  line-height: 24rpx;
+  height: 24rpx;
+  color: #8ba895;
+  font-family: -apple-system, BlinkMacSystemFont, 'PingFang SC', 'Hiragino Sans GB', 'Helvetica Neue', sans-serif;
+}
+
+.fv-inline-stat__num {
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+  font-feature-settings: 'tnum' 1;
+}
+
+.fv-metric {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-end;
+  justify-content: flex-end;
+  gap: 6rpx;
+  white-space: nowrap;
+}
+
+.fv-metric__value {
+  font-size: 40rpx;
+  line-height: 40rpx;
+  height: 40rpx;
+  font-weight: 800;
+  color: #f2d58d;
+  font-family: -apple-system, BlinkMacSystemFont, 'PingFang SC', 'Hiragino Sans GB', 'Helvetica Neue', sans-serif;
+  font-variant-numeric: tabular-nums;
+  font-feature-settings: 'tnum' 1;
+}
+
+.fv-metric__unit {
+  font-size: 20rpx;
+  line-height: 20rpx;
+  height: 20rpx;
+  color: #8ba895;
+  padding-bottom: 2rpx;
+  font-family: -apple-system, BlinkMacSystemFont, 'PingFang SC', 'Hiragino Sans GB', 'Helvetica Neue', sans-serif;
+}
+
+.fv-stack-metric {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.fv-stack-metric__value {
+  font-size: 34rpx;
+  line-height: 34rpx;
+  height: 34rpx;
+  font-weight: 700;
+  color: #ece9df;
+  font-family: -apple-system, BlinkMacSystemFont, 'PingFang SC', 'Hiragino Sans GB', 'Helvetica Neue', sans-serif;
+  font-variant-numeric: tabular-nums;
+  font-feature-settings: 'tnum' 1;
+}
+
+.fv-stack-metric__label {
+  margin-top: 6rpx;
+  font-size: 18rpx;
+  line-height: 18rpx;
+  height: 18rpx;
+  color: #8ba895;
+}

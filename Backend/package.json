@@ -1,0 +1,82 @@
+{
+  "name": "floraverse-server",
+  "version": "0.1.0",
+  "description": "FloraVerse 微信小程序后端 API",
+  "private": true,
+  "license": "UNLICENSED",
+  "author": "",
+  "type": "module",
+  "packageManager": "pnpm@10.28.0",
+  "engines": {
+    "node": ">=22"
+  },
+  "scripts": {
+    "build": "prisma generate && nest build",
+    "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\" \"prisma7.config.ts\"",
+    "start": "nest start",
+    "start:dev": "nest start --watch",
+    "start:debug": "nest start --debug --watch",
+    "start:prod": "node dist/main.js",
+    "start:worker": "nest start --entryFile worker",
+    "start:worker:dev": "nest start --watch --entryFile worker",
+    "start:worker:prod": "node dist/worker.js",
+    "lint": "eslint .",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "test:cov": "vitest run --coverage",
+    "test:e2e": "vitest run --config ./vitest.config.e2e.ts",
+    "db:up": "docker compose up -d",
+    "db:down": "docker compose down",
+    "prisma:generate": "prisma generate",
+    "prisma:migrate": "prisma migrate dev",
+    "prisma:deploy": "prisma migrate deploy",
+    "db:seed": "prisma db seed",
+    "postinstall": "node --input-type=module -e \"import { existsSync } from 'node:fs'; import { spawnSync } from 'node:child_process'; if (!existsSync('node_modules/prisma/package.json') || !existsSync('prisma/schema.prisma')) process.exit(0); const executable = process.platform === 'win32' ? 'prisma.cmd' : 'prisma'; const result = spawnSync(executable, ['generate'], { stdio: 'inherit', shell: process.platform === 'win32' }); if (result.error) throw result.error; process.exit(result.status ?? 1);\""
+  },
+  "dependencies": {
+    "@nestjs/common": "^12.0.1",
+    "@nestjs/config": "^12.1.1",
+    "@nestjs/core": "^12.0.1",
+    "@nestjs/jwt": "12.0.5",
+    "@nestjs/platform-express": "^12.0.1",
+    "@nestjs/swagger": "^12.1.2",
+    "@prisma/adapter-mariadb": "^7.10.1",
+    "@prisma/client": "^7.10.1",
+    "argon2": "^0.45.2",
+    "class-transformer": "^0.5.1",
+    "class-validator": "^0.14.2",
+    "helmet": "^8.1.0",
+    "reflect-metadata": "^0.2.2",
+    "rxjs": "^7.8.1",
+    "zod": "^4.1.12"
+  },
+  "devDependencies": {
+    "@eslint/js": "^10.0.1",
+    "@nestjs/cli": "^12.0.0",
+    "@nestjs/schematics": "^12.0.0",
+    "@nestjs/testing": "^12.0.1",
+    "@types/express": "^5.0.0",
+    "@types/node": "^24.0.0",
+    "@types/supertest": "^7.0.0",
+    "@vitest/coverage-v8": "^4.1.2",
+    "dotenv": "^17.2.3",
+    "eslint": "^10.15.0",
+    "prettier": "^3.4.2",
+    "prisma": "^7.10.1",
+    "supertest": "^7.0.0",
+    "tsx": "^4.23.15",
+    "typescript": "^6.0.2",
+    "typescript-eslint": "^8.48.0",
+    "vite": "^8.0.0",
+    "vitest": "^4.1.2"
+  },
+  "pnpm": {
+    "onlyBuiltDependencies": [
+      "@prisma/client",
+      "@prisma/engines",
+      "argon2",
+      "esbuild",
+      "prisma"
+    ]
+  }
+}

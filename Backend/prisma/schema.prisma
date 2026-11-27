@@ -1,0 +1,245 @@
+generator client {
+  provider = "prisma-client"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "mysql"
+}
+
+/// ACTIVE 可登录；DISABLED 为封禁且可恢复；PENDING_DELETION 已申请注销；DELETED 已匿名化。用户行保留，外键继续 Restrict。
+enum UserStatus {
+  ACTIVE
+  DISABLED
+  PENDING_DELETION
+  DELETED
+}
+
+/// 登录来源。微信身份与密码身份可以同时存在。
+enum AuthProvider {
+  WECHAT_MINI_PROGRAM
+  PASSWORD
+}
+
+/// 物种、科、属是否对图鉴可见。
+enum CatalogStatus {
+  DRAFT
+  ACTIVE
+  DISABLED
+}
+
+/// 植物个体品质。当前不参与战力计算。
+enum PlantRarity {
+  COMMON
+  UNCOMMON
+  RARE
+  LEGENDARY
+}
+
+enum AssetKind {
+  USER_AVATAR
+  SPECIES_COVER
+  INSTANCE_COVER
+  CAPTURE_SOURCE
+}
+
+enum StorageProvider {
+  LOCAL
+  COS
+}
+
+enum AssetVisibility {
+  PRIVATE
+  PUBLIC
+}
+
+enum InstanceStatus {
+  ACTIVE
+  DELETED
+}
+
+/// 内部用户。openid 不在本表，开发环境可以没有登录身份。
+model User {
+  id                  String     @id @default(cuid())
+  status              UserStatus @default(ACTIVE)
+  nickname            String?    @db.VarChar(64)
+  avatarAssetId       String?
+  deletionRequestedAt DateTime?
+  createdAt           DateTime   @default(now())
+  updatedAt           DateTime   @updatedAt
+
+  avatar         Asset?          @relation("UserAvatar", fields: [avatarAssetId], references: [id], onDelete: SetNull)
+  ownedAssets    Asset[]         @relation("AssetOwner")
+  authIdentities AuthIdentity[]
+  captures       PlantCapture[]
+  instances      PlantInstance[]
+
+  @@map("users")
+}
+
+/// 登录身份。provider + providerSubject 唯一。微信的主体是 openid，密码登录的主体是规范化用户名。
+model AuthIdentity {
+  id              String       @id @default(cuid())
+  userId          String
+  provider        AuthProvider
+  providerSubject String       @db.VarChar(128)
+  unionId         String?      @db.VarChar(128)
+  /// 仅密码身份使用。微信身份保持为空。
+  passwordHash    String?      @db.VarChar(255)
+  createdAt       DateTime     @default(now())
+  updatedAt       DateTime     @updatedAt
+
+  user User @relation(fields: [userId], references: [id], onDelete: Restrict)
+
+  @@unique([provider, providerSubject])
+  @@index([userId])
+  @@map("auth_identities")
+}
+
+/// 植物科。学名可空，当前物种库只提供中文科名。
+model PlantFamily {
+  id             String        @id @default(cuid())
+  scientificName String?       @unique @db.VarChar(191)
+  chineseName    String        @unique @db.VarChar(64)
+  status         CatalogStatus @default(ACTIVE)
+  createdAt      DateTime      @default(now())
+  updatedAt      DateTime      @updatedAt
+
+  genera PlantGenus[]
+
+  @@map("plant_families")
+}
+
+/// 植物属，必须属于一个科。
+model PlantGenus {
+  id             String        @id @default(cuid())
+  familyId       String
+  scientificName String?       @unique @db.VarChar(191)
+  chineseName    String        @db.VarChar(64)
+  status         CatalogStatus @default(ACTIVE)
+  createdAt      DateTime      @default(now())
+  updatedAt      DateTime      @updatedAt
+
+  family  PlantFamily    @relation(fields: [familyId], references: [id], onDelete: Restrict)
+  species PlantSpecies[]
+
+  @@unique([familyId, chineseName])
+  @@index([familyId, status])
+  @@map("plant_genera")
+}
+
+/// 系统维护的物种主数据，不归属用户。
+model PlantSpecies {
+  id                    String        @id @default(cuid())
+  genusId               String
+  scientificName        String        @unique @db.VarChar(191)
+  chineseName           String        @db.VarChar(64)
+  commonNames           Json
+  description           String        @db.Text
+  /// 叶形、典型高度、显著特征。结构与前端 PlantCharacteristics 一致。
+  characteristics       Json?
+  /// 物种基础战力。环境加成在读取时计算，不写回本字段。
+  baseCombatPower       Int
+  taxonomySource        String        @default("floraverse-seed") @db.VarChar(64)
+  taxonomyVersion       String        @default("2026.11") @db.VarChar(32)
+  representativeAssetId String?
+  status                CatalogStatus @default(ACTIVE)
+  createdAt             DateTime      @default(now())
+  updatedAt             DateTime      @updatedAt
+
+  genus               PlantGenus      @relation(fields: [genusId], references: [id], onDelete: Restrict)
+  representativeAsset Asset?          @relation("SpeciesCover", fields: [representativeAssetId], references: [id], onDelete: SetNull)
+  captures            PlantCapture[]
+  instances           PlantInstance[]
+
+  @@index([genusId, status])
+  @@index([status, chineseName])
+  @@map("plant_species")
+}
+
+/// 图片元数据。二进制只存在对象存储或本地文件中。
+model Asset {
+  id              String          @id @default(cuid())
+  kind            AssetKind
+  ownerUserId     String?
+  storageProvider StorageProvider
+  bucket          String?         @db.VarChar(128)
+  objectKey       String          @db.VarChar(512)
+  /// 可空。正式访问地址优先在运行时签发，不依赖永久 URL。
+  publicUrl       String?         @db.VarChar(1024)
+  mimeType        String?         @db.VarChar(127)
+  sizeBytes       Int?
+  width           Int?
+  height          Int?
+  checksum        String?         @db.VarChar(128)
+  visibility      AssetVisibility @default(PRIVATE)
+  createdAt       DateTime        @default(now())
+  updatedAt       DateTime        @updatedAt
+
+  owner          User?           @relation("AssetOwner", fields: [ownerUserId], references: [id], onDelete: Restrict)
+  avatarOf       User[]          @relation("UserAvatar")
+  speciesCovers  PlantSpecies[]  @relation("SpeciesCover")
+  instanceCovers PlantInstance[] @relation("InstanceCover")
+  captureSources PlantCapture[]  @relation("CaptureSource")
+
+  @@unique([storageProvider, objectKey])
+  @@index([ownerUserId, createdAt])
+  @@map("assets")
+}
+
+/// 一次收录的审计记录。不保存精确经纬度。
+model PlantCapture {
+  id             String   @id @default(cuid())
+  userId         String
+  speciesId      String
+  sourceAssetId  String?
+  idempotencyKey String   @db.VarChar(128)
+  capturedAt     DateTime
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+
+  user        User           @relation(fields: [userId], references: [id], onDelete: Restrict)
+  species     PlantSpecies   @relation(fields: [speciesId], references: [id], onDelete: Restrict)
+  sourceAsset Asset?         @relation("CaptureSource", fields: [sourceAssetId], references: [id], onDelete: Restrict)
+  instance    PlantInstance?
+
+  @@unique([userId, idempotencyKey])
+  @@index([userId, capturedAt])
+  @@index([userId, speciesId])
+  @@map("plant_captures")
+}
+
+/// 用户拥有的独立植物个体。同一物种可以有多条记录。
+model PlantInstance {
+  id               String         @id @default(cuid())
+  ownerUserId      String
+  speciesId        String
+  captureId        String         @unique
+  nickname         String?        @db.VarChar(64)
+  level            Int            @default(1)
+  experience       Int            @default(0)
+  /// 个体品质。与物种战力无关，公式未接入前不得用它改写 baseCombatPower。
+  quality          PlantRarity?
+  /// 初始属性生成过程的追溯值。不代替 attributes 快照。
+  attributeSeed    String?        @db.VarChar(64)
+  /// 当前属性快照。结构为 { version, attributes }。属性名未确认前 attributes 必须是空对象。
+  attributes       Json?
+  /// 与快照 version 一致的可查询版本。没有快照时为空。
+  attributeVersion String?        @db.VarChar(32)
+  /// 预留给不含环境加成的个体战力快照。公式确定前必须保持空。
+  combatPower      Int?
+  coverAssetId     String?
+  status           InstanceStatus @default(ACTIVE)
+  capturedAt       DateTime
+  createdAt        DateTime       @default(now())
+  updatedAt        DateTime       @updatedAt
+
+  owner      User         @relation(fields: [ownerUserId], references: [id], onDelete: Restrict)
+  species    PlantSpecies @relation(fields: [speciesId], references: [id], onDelete: Restrict)
+  capture    PlantCapture @relation(fields: [captureId], references: [id], onDelete: Restrict)
+  coverAsset Asset?       @relation("InstanceCover", fields: [coverAssetId], references: [id], onDelete: SetNull)
+
+  @@index([ownerUserId, speciesId])
+  @@index([ownerUserId, status, capturedAt])
+  @@map("plant_instances")
+}

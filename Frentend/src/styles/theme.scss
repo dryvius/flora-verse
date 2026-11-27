@@ -1,0 +1,48 @@
+/* Naturalist Journal — define page and :root separately.
+   WeChat WXSS drops the whole rule if :root is grouped with page. */
+
+page {
+  --bg-main: #0f1914;
+  --bg-card-dark: #16241d;
+  --bg-paper-light: #f4efe6;
+  --bg-tabbar: #121c17;
+  --color-amber-gold: #d4a359;
+  --color-moss-green: #4a7a5d;
+  --color-sage-subtle: #8ba895;
+  --color-terracotta: #b85d43;
+  --color-brass-hi: #e8c48a;
+  --color-brass-mid: #c4924a;
+  --color-brass-lo: #7a5424;
+  --text-primary: #ece9df;
+  --text-secondary: #9aa89f;
+  --text-dark-primary: #2b2823;
+  --border-subtle: rgba(212, 163, 89, 0.2);
+  --border-card: rgba(255, 255, 255, 0.08);
+  --shadow-card: 0 4px 16px rgba(0, 0, 0, 0.35);
+  --tabbar-height: 96rpx;
+  --tabbar-fab-size: 136rpx;
+  background-color: #0f1914;
+  color: #ece9df;
+}
+
+/* #ifdef H5 */
+:root {
+  --bg-main: #0f1914;
+  --bg-card-dark: #16241d;
+  --bg-paper-light: #f4efe6;
+  --bg-tabbar: #121c17;
+  --color-amber-gold: #d4a359;
+  --color-moss-green: #4a7a5d;
+  --color-sage-subtle: #8ba895;
+  --color-terracotta: #b85d43;
+  --color-brass-hi: #e8c48a;
+  --color-brass-mid: #c4924a;
+  --color-brass-lo: #7a5424;
+  --text-primary: #ece9df;
+  --text-secondary: #9aa89f;
+  --text-dark-primary: #2b2823;
+  --border-subtle: rgba(212, 163, 89, 0.2);
+  --border-card: rgba(255, 255, 255, 0.08);
+  --shadow-card: 0 4px 16px rgba(0, 0, 0, 0.35);
+}
+/* #endif */

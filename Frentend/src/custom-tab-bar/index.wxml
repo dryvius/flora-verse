@@ -1,0 +1,35 @@
+<view class="tabbar">
+  <view class="halo"></view>
+  <view class="bar">
+    <view class="rail-left"></view>
+    <view class="rail-right"></view>
+    <view class="item {{selected === 'home' ? 'active' : ''}}" bindtap="onHome">
+      <text class="glyph glyph-camp">⌂</text>
+      <text class="label">营地</text>
+    </view>
+    <view hidden="{{!showPrivateTabs}}" class="item {{showPrivateTabs ? '' : 'is-hidden'}} {{selected === 'collection' ? 'active' : ''}}" bindtap="onCollection">
+      <text class="glyph glyph-codex">▣</text>
+      <text class="label">图鉴</text>
+    </view>
+    <view class="slot"></view>
+    <view hidden="{{!showPrivateTabs}}" class="item {{showPrivateTabs ? '' : 'is-hidden'}} {{selected === 'rank' ? 'active' : ''}}" bindtap="onRank">
+      <text class="glyph glyph-rank">☰</text>
+      <text class="label">排行</text>
+    </view>
+    <view class="item {{selected === 'me' ? 'active' : ''}}" bindtap="onMe">
+      <text class="glyph glyph-me">◎</text>
+      <text class="label">我的</text>
+    </view>
+  </view>
+  <view class="shutter" bindtap="onCapture">
+    <view class="bezel">
+      <view class="tick n"></view>
+      <view class="tick e"></view>
+      <view class="tick s"></view>
+      <view class="tick w"></view>
+      <view class="core">
+        <text class="mark">+</text>
+      </view>
+    </view>
+  </view>
+</view>

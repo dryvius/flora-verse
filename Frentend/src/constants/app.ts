@@ -1,0 +1,11 @@
+export const APP_NAME = 'FloraVerse'
+export const DEMO_USER_ID = 'usr_demo_001'
+export const DEFAULT_PAGE = 1
+export const DEFAULT_PAGE_SIZE = 20
+export const HOME_RECENT_LIMIT = 3
+export const CAMP_RECENT_RAIL_LIMIT = 3
+export const SPECIMEN_STACK_LIMIT = 3
+export const RECOGNITION_POLL_INTERVAL_MS = 400
+export const RECOGNITION_TIMEOUT_MS = 15000
+export const MOCK_UPLOAD_DELAY_MS = 400
+export const MOCK_RECOGNITION_DELAY_MS = 1600

@@ -1,0 +1,155 @@
+{
+  "pages": [
+    {
+      "path": "pages/home/index",
+      "style": {
+        "navigationBarTitleText": "FloraVerse",
+        "disableScroll": true,
+        "backgroundColorContent": "#0F1914"
+      }
+    },
+    {
+      "path": "pages/collection/index",
+      "style": {
+        "navigationBarTitleText": "植物谱",
+        "backgroundColorContent": "#0F1914"
+      }
+    },
+    {
+      "path": "pages/rank/index",
+      "style": {
+        "navigationBarTitleText": "好友排行",
+        "backgroundColorContent": "#0F1914"
+      }
+    },
+    {
+      "path": "pages/me/index",
+      "style": {
+        "navigationBarTitleText": "我的",
+        "backgroundColorContent": "#0F1914"
+      }
+    },
+    {
+      "path": "pages/capture/index",
+      "style": {
+        "navigationBarTitleText": "收录",
+        "disableScroll": true,
+        "backgroundColorContent": "#0F1914"
+      }
+    },
+    {
+      "path": "pages/capture/preview",
+      "style": {
+        "navigationBarTitleText": "锁定目标",
+        "backgroundColorContent": "#0F1914"
+      }
+    },
+    {
+      "path": "pages/capture/recognizing",
+      "style": {
+        "navigationBarTitleText": "解析中",
+        "navigationStyle": "custom",
+        "backgroundColorContent": "#0F1914"
+      }
+    },
+    {
+      "path": "pages/capture/result",
+      "style": {
+        "navigationBarTitleText": "识别结果",
+        "backgroundColorContent": "#0F1914"
+      }
+    },
+    {
+      "path": "pages/capture/candidates",
+      "style": {
+        "navigationBarTitleText": "候选物种",
+        "backgroundColorContent": "#0F1914"
+      }
+    },
+    {
+      "path": "pages/capture/success",
+      "style": {
+        "navigationBarTitleText": "收录成功",
+        "backgroundColorContent": "#0F1914"
+      }
+    },
+    {
+      "path": "pages/collection/species-detail",
+      "style": {
+        "navigationBarTitleText": "物种档案",
+        "backgroundColorContent": "#0F1914"
+      }
+    },
+    {
+      "path": "pages/collection/instance-detail",
+      "style": {
+        "navigationBarTitleText": "个体档案",
+        "backgroundColorContent": "#0F1914"
+      }
+    },
+    {
+      "path": "pages/me/settings",
+      "style": {
+        "navigationBarTitleText": "设置与隐私",
+        "backgroundColorContent": "#0F1914"
+      }
+    },
+    {
+      "path": "pages/auth/login",
+      "style": {
+        "navigationBarTitleText": "登录",
+        "backgroundColorContent": "#0F1914"
+      }
+    },
+    {
+      "path": "pages/auth/register",
+      "style": {
+        "navigationBarTitleText": "注册",
+        "backgroundColorContent": "#0F1914"
+      }
+    }
+  ],
+  "globalStyle": {
+    "navigationBarTextStyle": "white",
+    "navigationBarTitleText": "FloraVerse",
+    "navigationBarBackgroundColor": "#0F1914",
+    "backgroundColor": "#0F1914",
+    "backgroundColorContent": "#0F1914",
+    "backgroundColorTop": "#0F1914",
+    "backgroundColorBottom": "#0F1914",
+    "backgroundTextStyle": "light"
+  },
+  "tabBar": {
+    "custom": true,
+    "color": "#8BA895",
+    "selectedColor": "#D4A359",
+    "backgroundColor": "#0F1914",
+    "borderStyle": "black",
+    "list": [
+      {
+        "pagePath": "pages/home/index",
+        "text": "营地",
+        "iconPath": "static/tabbar/home.png",
+        "selectedIconPath": "static/tabbar/home-active.png"
+      },
+      {
+        "pagePath": "pages/collection/index",
+        "text": "图鉴",
+        "iconPath": "static/tabbar/collection.png",
+        "selectedIconPath": "static/tabbar/collection-active.png"
+      },
+      {
+        "pagePath": "pages/rank/index",
+        "text": "排行",
+        "iconPath": "static/tabbar/rank.png",
+        "selectedIconPath": "static/tabbar/rank-active.png"
+      },
+      {
+        "pagePath": "pages/me/index",
+        "text": "我的",
+        "iconPath": "static/tabbar/me.png",
+        "selectedIconPath": "static/tabbar/me-active.png"
+      }
+    ]
+  }
+}

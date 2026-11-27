@@ -1,0 +1,188 @@
+.hud,
+.bracket,
+.scope,
+.orbit,
+.lock-ring,
+.deg,
+.obs-kicker,
+.obs-name,
+.stamp-date,
+.stamp-no,
+.status-text {
+  background-color: rgba(0, 0, 0, 0);
+}
+
+.hud {
+  position: absolute;
+  z-index: 4;
+  box-sizing: border-box;
+  border: 1px solid rgba(224, 181, 106, 0.82);
+  border-radius: 14px;
+  overflow: hidden;
+}
+
+.bracket {
+  position: absolute;
+  z-index: 2;
+  border-color: #e0b56a;
+  border-style: solid;
+  box-sizing: border-box;
+}
+
+.tl {
+  border-width: 2px 0 0 2px;
+}
+
+.tr {
+  border-width: 2px 2px 0 0;
+}
+
+.bl {
+  border-width: 0 0 2px 2px;
+}
+
+.br {
+  border-width: 0 2px 2px 0;
+}
+
+.obs-kicker,
+.obs-name,
+.stamp-date,
+.stamp-no,
+.deg {
+  position: absolute;
+  color: #d7c094;
+  font-family: 'Times New Roman', Georgia, serif;
+  letter-spacing: 0.4px;
+  white-space: nowrap;
+}
+
+.obs-kicker,
+.stamp-date {
+  font-size: 10px;
+}
+
+.obs-name,
+.stamp-no {
+  font-size: 11px;
+  color: #f0d7a6;
+}
+
+.obs-name {
+  letter-spacing: 0;
+}
+
+.align-right {
+  text-align: right;
+}
+
+.scope {
+  position: absolute;
+}
+
+.orbit,
+.lock-ring {
+  position: absolute;
+  border-radius: 50%;
+  box-sizing: border-box;
+}
+
+.orbit {
+  border: 1px dashed rgba(224, 181, 106, 0.72);
+  animation: compassSpin 30s linear infinite;
+}
+
+.lock-ring {
+  border: 1px dashed rgba(224, 181, 106, 0.95);
+}
+
+.is-locked .lock-ring {
+  border-color: rgba(125, 186, 147, 0.95);
+}
+
+.tick {
+  position: absolute;
+  background-color: #e0b56a;
+}
+
+.deg {
+  font-size: 11px;
+  text-align: center;
+}
+
+.e-label {
+  text-align: left;
+}
+
+.w-label {
+  text-align: right;
+}
+
+.cross-h,
+.cross-v,
+.cross-dot {
+  position: absolute;
+  background-color: rgba(224, 181, 106, 0.9);
+}
+
+.cross-dot {
+  border-radius: 50%;
+}
+
+.is-locked .cross-h,
+.is-locked .cross-v,
+.is-locked .cross-dot {
+  background-color: #8fcfa6;
+}
+
+.lock-status {
+  position: absolute;
+  box-sizing: border-box;
+  border: 1px solid rgba(224, 181, 106, 0.45);
+  border-radius: 4px;
+  background-color: rgba(8, 18, 13, 0.88);
+}
+
+.status-dot {
+  position: absolute;
+  border-radius: 50%;
+  background-color: #d4a359;
+}
+
+.ready .status-dot {
+  background-color: #7dba93;
+}
+
+.status-text {
+  position: absolute;
+  color: #f0e2c4;
+  font-size: 12px;
+  text-align: center;
+  white-space: nowrap;
+}
+
+.shutter {
+  position: absolute;
+  border-radius: 50%;
+  background-color: #6d4b24;
+}
+
+.shutter-label {
+  position: absolute;
+  border-radius: 50%;
+  background-color: #d4a359;
+  color: #2b2823;
+  font-size: 16px;
+  font-weight: 700;
+  text-align: center;
+}
+
+.pressed .shutter-label {
+  background-color: #f0d7a4;
+}
+
+@keyframes compassSpin {
+  to {
+    transform: rotate(360deg);
+  }
+}
